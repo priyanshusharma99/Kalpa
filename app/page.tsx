@@ -1,11 +1,7 @@
-import { Room } from "./room";
-import { CollaborativeApp } from "./CollaborativeApp";
 
 const page = () => {
   return (
-    <Room>
-      <CollaborativeApp/>
-    </Room>
+      <h1 className="text-xl text-white">Hello World!!</h1>
   )
 }
 
