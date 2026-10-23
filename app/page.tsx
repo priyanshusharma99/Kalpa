@@ -1,8 +1,12 @@
+"use client";
+import Live from "@/components/ui/Live";
 
 const page = () => {
   return (
-      <h1 className="text-xl text-white">Hello World!!</h1>
-  )
-}
+    <>
+      <Live />
+    </>
+  );
+};
 
-export default page
+export default page;
