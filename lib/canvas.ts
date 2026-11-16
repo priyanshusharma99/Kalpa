@@ -148,12 +148,7 @@ export const handleCanvasMouseUp = ({
   setActiveElement,
 }: CanvasMouseUp) => {
   isDrawing.current = false;
-  if (selectedShapeRef.current === "freeform") {
-    canvas.isDrawingMode = false;
-    selectedShapeRef.current = null;
-    setActiveElement(defaultNavElement);
-    return;
-  }
+  if (selectedShapeRef.current === "freeform") return;
 
   if (shapeRef.current) syncShapeInStorage(shapeRef.current);
 
