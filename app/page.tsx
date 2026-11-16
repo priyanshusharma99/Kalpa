@@ -1,5 +1,5 @@
 "use client";
-import Live from "@/components/ui/Live";
+import Live from "@/components/Live";
 
 const page = () => {
   return (
