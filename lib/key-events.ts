@@ -1,4 +1,4 @@
-import { fabric } from "fabric";
+import * as fabric from "fabric";
 import { v4 as uuidv4 } from "uuid";
 
 import { CustomFabricObject } from "@/types/type";
@@ -6,9 +6,7 @@ import { CustomFabricObject } from "@/types/type";
 export const handleCopy = (canvas: fabric.Canvas) => {
   const activeObjects = canvas.getActiveObjects();
   if (activeObjects.length > 0) {
-    // Serialize the selected objects
     const serializedObjects = activeObjects.map((obj) => obj.toObject());
-    // Store the serialized objects in the clipboard
     localStorage.setItem("clipboard", JSON.stringify(serializedObjects));
   }
 
@@ -17,40 +15,35 @@ export const handleCopy = (canvas: fabric.Canvas) => {
 
 export const handlePaste = (
   canvas: fabric.Canvas,
-  syncShapeInStorage: (shape: fabric.Object) => void
+  syncShapeInStorage: (shape: fabric.FabricObject) => void
 ) => {
   if (!canvas || !(canvas instanceof fabric.Canvas)) {
     console.error("Invalid canvas object. Aborting paste operation.");
     return;
   }
 
-  // Retrieve serialized objects from the clipboard
   const clipboardData = localStorage.getItem("clipboard");
 
   if (clipboardData) {
     try {
       const parsedObjects = JSON.parse(clipboardData);
-      parsedObjects.forEach((objData: fabric.Object) => {
-        // convert the plain javascript objects retrieved from localStorage into fabricjs objects (deserialization)
-        fabric.util.enlivenObjects(
-          [objData],
-          (enlivenedObjects: fabric.Object[]) => {
-            enlivenedObjects.forEach((enlivenedObj) => {
-              // Offset the pasted objects to avoid overlap with existing objects
-              enlivenedObj.set({
-                left: enlivenedObj.left || 0 + 20,
-                top: enlivenedObj.top || 0 + 20,
-                objectId: uuidv4(),
-                fill: "#aabbcc",
-              } as CustomFabricObject<any>);
-
-              canvas.add(enlivenedObj);
-              syncShapeInStorage(enlivenedObj);
+      parsedObjects.forEach((objData: fabric.FabricObject) => {
+        fabric.util.enlivenObjects([objData]).then((enlivenedObjects) => {
+          enlivenedObjects.forEach((enlivenedObj) => {
+            const obj = enlivenedObj as fabric.FabricObject & { objectId?: string };
+            obj.set({
+              left: (obj.left || 0) + 20,
+              top: (obj.top || 0) + 20,
+              // @ts-ignore
+              objectId: uuidv4(),
+              fill: "#aabbcc",
             });
-            canvas.renderAll();
-          },
-          "fabric"
-        );
+
+            canvas.add(obj);
+            syncShapeInStorage(obj);
+          });
+          canvas.renderAll();
+        });
       });
     } catch (error) {
       console.error("Error parsing clipboard data:", error);
@@ -90,7 +83,7 @@ export const handleKeyDown = ({
   canvas: fabric.Canvas | any;
   undo: () => void;
   redo: () => void;
-  syncShapeInStorage: (shape: fabric.Object) => void;
+  syncShapeInStorage: (shape: fabric.FabricObject) => void;
   deleteShapeFromStorage: (id: string) => void;
 }) => {
   // Check if the key pressed is ctrl/cmd + c (copy)
