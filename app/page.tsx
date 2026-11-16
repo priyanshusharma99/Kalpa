@@ -1,11 +1,9 @@
 "use client";
-import Live from "@/components/Live";
+import Editor from "@/components/Editor";
 
 const page = () => {
   return (
-    <>
-      <Live />
-    </>
+    <Editor />
   );
 };
 

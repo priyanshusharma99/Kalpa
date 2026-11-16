@@ -4,14 +4,15 @@ declare global {
   interface Liveblocks {
     // Each user's Presence, for useMyPresence, useOthers, etc.
     Presence: {
-      // Example, real-time cursor coordinates
-      // cursor: { x: number; y: number };
+      cursor: { x: number; y: number } | null;
+      cursorColor: string;
+      message: string | null;
+      editingText: string | null;
     };
 
     // The Storage tree for the room, for useMutation, useStorage, etc.
     Storage: {
-      // Example, a conflict-free list
-      // animals: LiveList<string>;
+      canvasObjects: import("@liveblocks/client").LiveMap<string, any>;
     };
 
     // Custom user info set when authenticating with a secret key
@@ -20,7 +21,8 @@ declare global {
       info: {
         // Example properties, for useSelf, useUser, useOthers, etc.
         // name: string;
-        // avatar: string;
+        name?: string;
+        avatar?: string;
       };
     };
 
@@ -36,9 +38,10 @@ declare global {
 
     // Custom metadata set on threads, for useThreads, useCreateThread, etc.
     ThreadMetadata: {
-      // Example, attaching coordinates to a thread
-      // x: number;
-      // y: number;
+      x: number;
+      y: number;
+      resolved: boolean;
+      zIndex: number;
     };
 
     // Custom room info set with resolveRoomsInfo, for useRoomInfo

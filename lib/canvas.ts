@@ -23,6 +23,9 @@ export const initializeFabric = ({
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
 }) => {
   const canvasElement = document.getElementById("canvas");
+  fabric.FabricObject.customProperties = Array.from(
+    new Set([...fabric.FabricObject.customProperties, "objectId"])
+  );
 
   const canvas = new fabric.Canvas(canvasRef.current ?? undefined, {
     width: canvasElement?.clientWidth,
@@ -41,8 +44,8 @@ export const handleCanvasMouseDown = ({
   isDrawing,
   shapeRef,
 }: CanvasMouseDown) => {
-  const pointer = canvas.getPointer(options.e);
-  const target = canvas.findTarget(options.e);
+  const pointer = canvas.getScenePoint(options.e);
+  const target = canvas.findTarget(options.e).target;
 
   canvas.isDrawingMode = false;
 
@@ -55,15 +58,14 @@ export const handleCanvasMouseDown = ({
 
   canvas.isDrawingMode = false;
 
-  if (
-    target &&
-    // @ts-ignore
-    (target.type === selectedShapeRef.current || target.type === "activeSelection")
-  ) {
+  if (!selectedShapeRef.current || selectedShapeRef.current === "select") {
     isDrawing.current = false;
-    // @ts-ignore
+    return;
+  }
+
+  if (target && target.type === selectedShapeRef.current) {
+    isDrawing.current = false;
     canvas.setActiveObject(target);
-    // @ts-ignore
     target.setCoords();
   } else {
     isDrawing.current = true;
@@ -88,7 +90,7 @@ export const handleCanvaseMouseMove = ({
 
   canvas.isDrawingMode = false;
 
-  const pointer = canvas.getPointer(options.e);
+  const pointer = canvas.getScenePoint(options.e);
 
   switch (selectedShapeRef?.current) {
     case "rectangle":
@@ -146,9 +148,14 @@ export const handleCanvasMouseUp = ({
   setActiveElement,
 }: CanvasMouseUp) => {
   isDrawing.current = false;
-  if (selectedShapeRef.current === "freeform") return;
+  if (selectedShapeRef.current === "freeform") {
+    canvas.isDrawingMode = false;
+    selectedShapeRef.current = null;
+    setActiveElement(defaultNavElement);
+    return;
+  }
 
-  syncShapeInStorage(shapeRef.current);
+  if (shapeRef.current) syncShapeInStorage(shapeRef.current);
 
   shapeRef.current = null;
   activeObjectRef.current = null;
@@ -169,8 +176,8 @@ export const handleCanvasObjectModified = ({
   const target = options.target;
   if (!target) return;
 
-  if (target?.type == "activeSelection") {
-    // fix this
+  if (target?.type === "activeselection" || target?.type === "activeSelection") {
+    target.getObjects().forEach((object: fabric.FabricObject) => syncShapeInStorage(object));
   } else {
     syncShapeInStorage(target);
   }
@@ -195,14 +202,15 @@ export const handlePathCreated = ({
 export const handleCanvasObjectMoving = ({
   options,
 }: {
-  options: fabric.TEvent;
+  options: fabric.TEvent & { target?: fabric.FabricObject };
 }) => {
-  const target = options.target as fabric.FabricObject;
+  const target = options.target;
+  if (!target) return;
   const canvas = target.canvas as fabric.Canvas;
 
   target.setCoords();
 
-  if (target && target.left) {
+  if (target && target.left !== undefined) {
     target.left = Math.max(
       0,
       Math.min(
@@ -212,7 +220,7 @@ export const handleCanvasObjectMoving = ({
     );
   }
 
-  if (target && target.top) {
+  if (target && target.top !== undefined) {
     target.top = Math.max(
       0,
       Math.min(

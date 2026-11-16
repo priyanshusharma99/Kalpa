@@ -100,6 +100,7 @@ export const handleImageUpload = ({
 
   reader.onload = async () => {
     const img = await fabric.Image.fromURL(reader.result as string);
+    if (!canvas.current) return;
     img.scaleToWidth(200);
     img.scaleToHeight(200);
 

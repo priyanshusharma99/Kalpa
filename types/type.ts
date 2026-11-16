@@ -85,7 +85,7 @@ export type ElementDirection = {
 
 export type ImageUpload = {
   file: File;
-  canvas: React.MutableRefObject<Canvas>;
+  canvas: React.MutableRefObject<Canvas | null>;
   shapeRef: React.MutableRefObject<FabricObject | null>;
   syncShapeInStorage: (shape: FabricObject) => void;
 };
@@ -102,7 +102,7 @@ export type RightSidebarProps = {
 export type NavbarProps = {
   activeElement: ActiveElement;
   imageInputRef: React.MutableRefObject<HTMLInputElement | null>;
-  handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleActiveElement: (element: ActiveElement) => void;
 };
 
@@ -186,7 +186,7 @@ export type CursorChatProps = {
     presence: Partial<{
       cursor: { x: number; y: number };
       cursorColor: string;
-      message: string;
+      message: string | null;
     }>
   ) => void;
 };
