@@ -1,4 +1,4 @@
-import { fabric } from "fabric";
+import * as fabric from "fabric";
 import { v4 as uuidv4 } from "uuid";
 
 import {
@@ -15,8 +15,9 @@ export const createRectangle = (pointer: PointerEvent) => {
     width: 100,
     height: 100,
     fill: "#aabbcc",
+    // @ts-ignore
     objectId: uuidv4(),
-  } as CustomFabricObject<fabric.Rect>);
+  });
 
   return rect;
 };
@@ -28,8 +29,9 @@ export const createTriangle = (pointer: PointerEvent) => {
     width: 100,
     height: 100,
     fill: "#aabbcc",
+    // @ts-ignore
     objectId: uuidv4(),
-  } as CustomFabricObject<fabric.Triangle>);
+  });
 };
 
 export const createCircle = (pointer: PointerEvent) => {
@@ -38,8 +40,9 @@ export const createCircle = (pointer: PointerEvent) => {
     top: pointer.y,
     radius: 100,
     fill: "#aabbcc",
+    // @ts-ignore
     objectId: uuidv4(),
-  } as any);
+  });
 };
 
 export const createLine = (pointer: PointerEvent) => {
@@ -48,8 +51,9 @@ export const createLine = (pointer: PointerEvent) => {
     {
       stroke: "#aabbcc",
       strokeWidth: 2,
+      // @ts-ignore
       objectId: uuidv4(),
-    } as CustomFabricObject<fabric.Line>
+    }
   );
 };
 
@@ -61,8 +65,9 @@ export const createText = (pointer: PointerEvent, text: string) => {
     fontFamily: "Helvetica",
     fontSize: 36,
     fontWeight: "400",
-    objectId: uuidv4()
-  } as fabric.ITextOptions);
+    // @ts-ignore
+    objectId: uuidv4(),
+  });
 };
 
 export const createSpecificShape = (
@@ -72,19 +77,14 @@ export const createSpecificShape = (
   switch (shapeType) {
     case "rectangle":
       return createRectangle(pointer);
-
     case "triangle":
       return createTriangle(pointer);
-
     case "circle":
       return createCircle(pointer);
-
     case "line":
       return createLine(pointer);
-
     case "text":
       return createText(pointer, "Tap to Type");
-
     default:
       return null;
   }
@@ -98,21 +98,20 @@ export const handleImageUpload = ({
 }: ImageUpload) => {
   const reader = new FileReader();
 
-  reader.onload = () => {
-    fabric.Image.fromURL(reader.result as string, (img) => {
-      img.scaleToWidth(200);
-      img.scaleToHeight(200);
+  reader.onload = async () => {
+    const img = await fabric.Image.fromURL(reader.result as string);
+    img.scaleToWidth(200);
+    img.scaleToHeight(200);
 
-      canvas.current.add(img);
+    canvas.current.add(img);
 
-      // @ts-ignore
-      img.objectId = uuidv4();
+    // @ts-ignore
+    img.objectId = uuidv4();
 
-      shapeRef.current = img;
+    shapeRef.current = img;
 
-      syncShapeInStorage(img);
-      canvas.current.requestRenderAll();
-    });
+    syncShapeInStorage(img);
+    canvas.current.requestRenderAll();
   };
 
   reader.readAsDataURL(file);
@@ -142,10 +141,9 @@ export const modifyShape = ({
 
   if (!selectedElement || selectedElement?.type === "activeSelection") return;
 
-  // if  property is width or height, set the scale of the selected element
   if (property === "width") {
     selectedElement.set("scaleX", 1);
-    selectedElement.set("width", value);  
+    selectedElement.set("width", value);
   } else if (property === "height") {
     selectedElement.set("scaleY", 1);
     selectedElement.set("height", value);
@@ -154,7 +152,6 @@ export const modifyShape = ({
     selectedElement.set(property as keyof object, value);
   }
 
-  // set selectedElement to activeObjectRef
   activeObjectRef.current = selectedElement;
 
   syncShapeInStorage(selectedElement);
@@ -167,20 +164,15 @@ export const bringElement = ({
 }: ElementDirection) => {
   if (!canvas) return;
 
-  // get the selected element. If there is no selected element or there are more than one selected element, return
   const selectedElement = canvas.getActiveObject();
 
   if (!selectedElement || selectedElement?.type === "activeSelection") return;
 
-  // bring the selected element to the front
   if (direction === "front") {
-    canvas.bringToFront(selectedElement);
+    canvas.bringObjectToFront(selectedElement);
   } else if (direction === "back") {
-    canvas.sendToBack(selectedElement);
+    canvas.sendObjectToBack(selectedElement);
   }
 
-  // canvas.renderAll();
   syncShapeInStorage(selectedElement);
-
-  // re-render all objects on the canvas
 };
