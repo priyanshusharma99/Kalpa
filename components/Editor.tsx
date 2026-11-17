@@ -54,6 +54,10 @@ export default function Editor() {
     if (!element) return;
     setActiveElement(element);
     if (element.value === "reset") {
+      if (!window.confirm("Are you sure you want to clear the canvas? This cannot be undone.")) {
+        setActiveElement(defaultNavElement);
+        return;
+      }
       deleteAllShapes();
       fabricRef.current?.clear();
       setActiveElement(defaultNavElement);
