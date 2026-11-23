@@ -3,7 +3,6 @@ import { Geist, Geist_Mono, JetBrains_Mono, Work_Sans } from "next/font/google";
 import "./globals.css";
 import "@liveblocks/react-ui/styles.css";
 import { cn } from "@/lib/utils";
-import { Room } from "./room";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -47,7 +46,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       )}
     >
       <body className={`${workSans.className} bg-primary-grey-200 `}>
-        <Room>{children}</Room>
+        {children}
       </body>
     </html>
   );

@@ -21,7 +21,7 @@ export default function Navbar({ activeElement, imageInputRef, handleImageUpload
     <header className="relative z-20 flex min-h-16 flex-wrap items-center justify-between gap-3 bg-primary-black px-4 py-2 text-white sm:px-6">
       <div className="flex items-center gap-3">
         <span className="text-xl font-bold tracking-tight text-primary-green">Kalpa</span>
-        <span className="hidden text-xs text-primary-grey-300 md:inline">Untitled design</span>
+        <a href="/" className="hidden text-xs text-primary-grey-300 hover:text-white md:inline">← Back to rooms</a>
       </div>
 
       <nav className="flex items-center gap-1" aria-label="Editor tools">

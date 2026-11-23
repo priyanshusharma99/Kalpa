@@ -18,7 +18,7 @@ type CanvasObject = fabric.FabricObject & { objectId?: string };
 
 const initialAttributes: Attributes = { width: "", height: "", fontSize: "", fontFamily: "", fontWeight: "400", fill: "#aabbcc", stroke: "#aabbcc" };
 
-export default function Editor() {
+export default function Editor({ roomId }: { roomId: string }) {
   const undo = useUndo();
   const redo = useRedo();
   const canvasObjects = useStorage((root) => root.canvasObjects);
