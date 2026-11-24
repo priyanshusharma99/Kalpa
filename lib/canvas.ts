@@ -14,7 +14,7 @@ import {
 import { defaultNavElement } from "@/constants";
 import { createSpecificShape } from "./shapes";
 
-// initialize fabric canvas
+// fabric canvas init kar rahe
 export const initializeFabric = ({
   fabricRef,
   canvasRef,
@@ -36,7 +36,7 @@ export const initializeFabric = ({
   return canvas;
 };
 
-// instantiate creation of custom fabric object/shape and add it to canvas
+// naya shape banake canvas pe daalo
 export const handleCanvasMouseDown = ({
   options,
   canvas,
@@ -76,7 +76,7 @@ export const handleCanvasMouseDown = ({
   }
 };
 
-// handle mouse move event on canvas to draw shapes with different dimensions
+// mouse move pe shape ka dimension adjust karo
 export const handleCanvaseMouseMove = ({
   options,
   canvas,
@@ -137,7 +137,7 @@ export const handleCanvaseMouseMove = ({
   }
 };
 
-// handle mouse up event on canvas to stop drawing shapes
+// mouse up pe drawing complete aur storage me sync
 export const handleCanvasMouseUp = ({
   canvas,
   isDrawing,
@@ -163,7 +163,7 @@ export const handleCanvasMouseUp = ({
   }
 };
 
-// update shape in storage when object is modified
+// object modify hone pe storage update
 export const handleCanvasObjectModified = ({
   options,
   syncShapeInStorage,
@@ -178,7 +178,7 @@ export const handleCanvasObjectModified = ({
   }
 };
 
-// update shape in storage when path is created when in freeform mode
+// freeform drawing ka path sync karo
 export const handlePathCreated = ({
   options,
   syncShapeInStorage,
@@ -193,7 +193,7 @@ export const handlePathCreated = ({
   syncShapeInStorage(path);
 };
 
-// check how object is moving on canvas and restrict it to canvas boundaries
+// canvas boundary ke bahar na jaye
 export const handleCanvasObjectMoving = ({
   options,
 }: {
@@ -226,7 +226,7 @@ export const handleCanvasObjectMoving = ({
   }
 };
 
-// set element attributes when element is selected
+// select hone pe sidebar ke attributes update karo
 export const handleCanvasSelectionCreated = ({
   options,
   isEditingRef,
@@ -262,7 +262,7 @@ export const handleCanvasSelectionCreated = ({
   }
 };
 
-// update element attributes when element is scaled
+// scale hone pe attributes sync karo
 export const handleCanvasObjectScaling = ({
   options,
   setElementAttributes,
@@ -284,7 +284,7 @@ export const handleCanvasObjectScaling = ({
   }));
 };
 
-// render canvas objects coming from storage on canvas
+// storage ke objects canvas pe render karna
 export const renderCanvas = ({
   fabricRef,
   canvasObjects,
@@ -306,7 +306,7 @@ export const renderCanvas = ({
   });
 };
 
-// resize canvas dimensions on window resize
+// window resize pe canvas adjust karo
 export const handleResize = ({ canvas }: { canvas: fabric.Canvas | null }) => {
   const canvasElement = document.getElementById("canvas");
   if (!canvasElement) return;
@@ -318,7 +318,7 @@ export const handleResize = ({ canvas }: { canvas: fabric.Canvas | null }) => {
   });
 };
 
-// zoom canvas on mouse scroll
+// mouse wheel se zoom handle karo
 export const handleCanvasZoom = ({
   options,
   canvas,

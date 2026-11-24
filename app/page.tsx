@@ -52,7 +52,6 @@ export default function HomePage() {
 
   return (
     <main className="flex min-h-screen flex-col bg-primary-grey-200 text-white">
-      {/* Header */}
       <header className="flex items-center justify-between border-b border-primary-grey-100 px-6 py-4">
         <span className="text-2xl font-bold tracking-tight text-primary-green">
           Kalpa
@@ -62,9 +61,8 @@ export default function HomePage() {
         </span>
       </header>
 
-      {/* Content */}
       <section className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-6 py-10">
-        {/* New room */}
+        {/* naya room create karne ke liye */}
         <div className="flex flex-col gap-3">
           <h1 className="text-lg font-semibold">Create a new room</h1>
           <form
@@ -90,7 +88,7 @@ export default function HomePage() {
           </form>
         </div>
 
-        {/* Room list */}
+        {/* saved rooms ki list */}
         <div className="flex flex-col gap-3">
           <h2 className="text-lg font-semibold">Your rooms</h2>
           {rooms.length === 0 ? (

@@ -1,8 +1,7 @@
-// Define Liveblocks types for your application
-// https://liveblocks.io/docs/api-reference/liveblocks-react#Typing-your-data
+// Liveblocks types configuration
 declare global {
   interface Liveblocks {
-    // Each user's Presence, for useMyPresence, useOthers, etc.
+    // user presence (cursor, chat wagera)
     Presence: {
       cursor: { x: number; y: number } | null;
       cursorColor: string;
@@ -10,33 +9,28 @@ declare global {
       editingText: string | null;
     };
 
-    // The Storage tree for the room, for useMutation, useStorage, etc.
+    // room ka shared storage tree
     Storage: {
       canvasObjects: import("@liveblocks/client").LiveMap<string, any>;
     };
 
-    // Custom user info set when authenticating with a secret key
+    // auth endpoint se aane wala user info
     UserMeta: {
       id: string;
       info: {
-        // Example properties, for useSelf, useUser, useOthers, etc.
-        // name: string;
         name?: string;
         avatar?: string;
       };
     };
 
-    // Custom events, for useBroadcastEvent, useEventListener
+    // broadcast events (flying reactions ke liye)
     RoomEvent: {
       x: number;
       y: number;
       value: string;
     };
-      // Example has two events, using a union
-      // | { type: "PLAY" } 
-      // | { type: "REACTION"; emoji: "🔥" };
 
-    // Custom metadata set on threads, for useThreads, useCreateThread, etc.
+    // canvas comments ke spatial coords
     ThreadMetadata: {
       x: number;
       y: number;
@@ -44,12 +38,7 @@ declare global {
       zIndex: number;
     };
 
-    // Custom room info set with resolveRoomsInfo, for useRoomInfo
-    RoomInfo: {
-      // Example, rooms with a title and url
-      // title: string;
-      // url: string;
-    };
+    RoomInfo: {};
   }
 }
 

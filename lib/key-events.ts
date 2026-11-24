@@ -70,7 +70,7 @@ export const handleDelete = (
   canvas.requestRenderAll();
 };
 
-// create a handleKeyDown function that listen to different keydown events
+// keyboard shortcuts handle karne ke liye
 export const handleKeyDown = ({
   e,
   canvas,
@@ -86,12 +86,12 @@ export const handleKeyDown = ({
   syncShapeInStorage: (shape: fabric.FabricObject) => void;
   deleteShapeFromStorage: (id: string) => void;
 }) => {
-  // Check if the key pressed is ctrl/cmd + c (copy)
+  // copy
   if ((e?.ctrlKey || e?.metaKey) && e.keyCode === 67) {
     handleCopy(canvas);
   }
 
-  // Check if the key pressed is ctrl/cmd + v (paste)
+  // paste
   if ((e?.ctrlKey || e?.metaKey) && e.keyCode === 86) {
     handlePaste(canvas, syncShapeInStorage);
   }
@@ -101,18 +101,18 @@ export const handleKeyDown = ({
     handleDelete(canvas, deleteShapeFromStorage);
   }
 
-  // check if the key pressed is ctrl/cmd + x (cut)
+  // cut
   if ((e?.ctrlKey || e?.metaKey) && e.keyCode === 88) {
     handleCopy(canvas);
     handleDelete(canvas, deleteShapeFromStorage);
   }
 
-  // check if the key pressed is ctrl/cmd + z (undo)
+  // undo
   if ((e?.ctrlKey || e?.metaKey) && e.keyCode === 90) {
     undo();
   }
 
-  // check if the key pressed is ctrl/cmd + y (redo)
+  // redo
   if ((e?.ctrlKey || e?.metaKey) && e.keyCode === 89) {
     redo();
   }

@@ -5,7 +5,7 @@ const liveblocks = new Liveblocks({
   secret: process.env.LIVEBLOCKS_SECRET_KEY!,
 });
 
-// Random name + avatar generation for anonymous users
+// anon users ke liye random identity
 const COLORS = ["#DC2626", "#D97706", "#059669", "#7C3AED", "#DB2777"];
 const ADJECTIVES = [
   "Happy", "Creative", "Energetic", "Lively", "Dynamic",
@@ -22,8 +22,7 @@ function pick<T>(arr: T[]): T {
 
 export async function POST(request: NextRequest) {
   try {
-    // In production you would validate a session cookie / JWT here
-    // and look up the real user. For now we generate anonymous identities.
+    // prod me yahan session check aayega, abhi dummy user bana rahe
     const userId = `user-${crypto.randomUUID()}`;
     const name = `${pick(ADJECTIVES)} ${pick(ANIMALS)}`;
     const color = pick(COLORS);
@@ -35,10 +34,8 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Allow full access to every room whose id starts with the expected prefix.
-    // Tighten this in production (e.g. check DB ownership).
     const { body: roomId } = await request.json().catch(() => ({ body: undefined })) as { body?: string };
-    // Grant access to all rooms – the client sends the room id it wants to join.
+    // filhal sabhi rooms ka access de rahe
     session.allow("*", session.FULL_ACCESS);
 
     const { status, body } = await session.authorize();

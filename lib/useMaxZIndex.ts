@@ -2,12 +2,10 @@ import { useMemo } from "react";
 
 import { useThreads } from "@liveblocks/react";
 
-// Returns the highest z-index of all threads
+// max z-index nikaal rahe taaki new thread upar rahe
 export const useMaxZIndex = () => {
-  // get all threads
   const { threads } = useThreads();
 
-  // calculate the max z-index
   return useMemo(() => {
     let max = 0;
     for (const thread of threads ?? []) {
