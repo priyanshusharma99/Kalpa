@@ -1,9 +1,15 @@
 import { Liveblocks } from "@liveblocks/node";
 import { NextRequest, NextResponse } from "next/server";
 
-const liveblocks = new Liveblocks({
-  secret: process.env.LIVEBLOCKS_SECRET_KEY!,
-});
+function getLiveblocks() {
+  const secret = process.env.LIVEBLOCKS_SECRET_KEY;
+  if (!secret) {
+    throw new Error(
+      "LIVEBLOCKS_SECRET_KEY is not defined. Please add it to your environment variables."
+    );
+  }
+  return new Liveblocks({ secret });
+}
 
 // anon users ke liye random identity
 const COLORS = ["#DC2626", "#D97706", "#059669", "#7C3AED", "#DB2777"];
@@ -22,7 +28,9 @@ function pick<T>(arr: T[]): T {
 
 export async function POST(request: NextRequest) {
   try {
-    // prod me yahan session check aayega, abhi dummy user bana rahe
+    const liveblocks = getLiveblocks();
+    // In production you would validate a session cookie / JWT here
+    // and look up the real user. For now we generate anonymous identities.
     const userId = `user-${crypto.randomUUID()}`;
     const name = `${pick(ADJECTIVES)} ${pick(ANIMALS)}`;
     const color = pick(COLORS);

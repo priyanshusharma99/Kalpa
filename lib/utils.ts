@@ -114,3 +114,15 @@ export const exportToPdf = () => {
   doc.addImage(data, "PNG", 0, 0, canvas.width, canvas.height);
   doc.save("canvas.pdf");
 };
+
+export const exportToPng = () => {
+  const canvas = document.querySelector("canvas");
+
+  if (!canvas) return;
+
+  const dataUrl = canvas.toDataURL("image/png");
+  const link = document.createElement("a");
+  link.href = dataUrl;
+  link.download = "canvas.png";
+  link.click();
+};

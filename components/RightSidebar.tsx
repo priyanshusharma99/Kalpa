@@ -4,7 +4,7 @@ import * as fabric from "fabric";
 
 import { alignmentOptions, directionOptions, fontFamilyOptions, fontSizeOptions, fontWeightOptions } from "@/constants";
 import { bringElement, modifyShape } from "@/lib/shapes";
-import { exportToPdf } from "@/lib/utils";
+import { exportToPdf, exportToPng } from "@/lib/utils";
 import type { Attributes } from "@/types/type";
 
 type Props = {
@@ -71,7 +71,10 @@ export default function RightSidebar({ elementAttributes, setElementAttributes, 
 
       <section className="border-t border-primary-grey-100 p-5">
         <h3 className="mb-3 text-[10px] uppercase tracking-wider">Export</h3>
-        <button type="button" onClick={exportToPdf} className="w-full rounded border border-primary-grey-100 px-3 py-2 text-sm text-white hover:border-primary-green hover:text-primary-green">Export to PDF</button>
+        <div className="flex flex-col gap-2">
+          <button type="button" onClick={exportToPng} className="w-full rounded border border-primary-grey-100 px-3 py-2 text-sm text-white hover:border-primary-green hover:text-primary-green">Export to PNG</button>
+          <button type="button" onClick={exportToPdf} className="w-full rounded border border-primary-grey-100 px-3 py-2 text-sm text-white hover:border-primary-green hover:text-primary-green">Export to PDF</button>
+        </div>
       </section>
     </aside>
   );
